@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+	<p>
+		<label for="template">Template</label><br />
+		<textarea id="template" cols="100" rows="12">
+<div class="content">
+    [{TITLE1}] / [{TITLE2}]
+    <ul class="attributes">
+        Attributes:
+        <li>Size: [{SIZE}]</li>
+        <li>Сolor: [{COLOR}]</li>
+    </ul>
+    <img src="[{IMAGE1}]" />
+    <img src="[{IMAGE2}]" />
+</div>
+		</textarea>
+	</p>
+	<p>
+		<label for="text">Text</label><br />
+		<textarea id="text" cols="100" rows="12">
+<div class="content">
+    Adidas shoes new / for women
+    <ul class="attributes">
+        Attributes:
+        <li>Size: 36</li>
+        <li>Сolor: Red</li>
+    </ul>
+    <img src="http://www.site.com/adidas-busenitz-vulc-skate-shoes-black-running-red.jpg" />
+    <img src="http://www.site.com/adidas-busenitz-vulc-skate-shoes-black-running-red2.jpg" />
+</div>
+		</textarea>
+	</p>
+	<p>
+		<label for="result">Result</label><br />
+		<textarea id="result" cols="100" rows="15"></textarea>
+	</p>
+	<p>
+		<input type="button" value="Get result" onclick="run()" />
+	</p>
+
+	<script type="text/javascript">
+		function parse(template, text) {
+			var result = [];
+
+			for (var i = 1, j = 1; i < template.length; i++, j++) {
+				var tm = template[i - 1] + template[i];
+				var tx = text[j - 1] || null;
+
+				if (tm === '[{') {
+					var tmLine = tm;
+					var txLine = tx;
+
+					do {
+						i++;
+						tmLine += template[i];
+					}
+					while (template[i] !== ']');
+
+					var textStop = '';
+					for (i = i + 1; i < template.length && template[i] !== '[' && template[i] !== '\n'; i++) {
+						textStop += template[i];
+					}
+					if (!textStop.length) {
+						textStop = '\n';
+					}
+					else {
+						i = i - 1;
+					}
+
+					//var valEnd = text.indexOf(textStop, j);
+					var nx = text.indexOf('\n', j);
+					var valEnd = nx > 0 ? text.lastIndexOf(textStop, nx) : text.lastIndexOf(textStop);
+					if (valEnd < 0) {
+						if (textStop == '\n') {
+							valEnd = text.length;
+						}
+						else {
+							result = "The text does not match the template";
+							break;
+						}
+					}
+
+					for (; j < valEnd; j++) {
+						txLine += text[j];
+					}
+					j = valEnd + textStop.length - 1;
+					result.push({ tag: tmLine, value: txLine });
+				}
+				else if (template[i - 1] !== text[j - 1]) {
+					result = "The text does not match the template";
+					break;
+				}
+			}
+
+			return JSON.stringify(result, null, 4);
+		}
+
+		function run() {
+			var template = document.getElementById("template").value.trim();
+			var text = document.getElementById("text").value.trim();
+
+			document.getElementById("result").value = parse(template, text);
+		}
+	</script>
+</body>
+</html>

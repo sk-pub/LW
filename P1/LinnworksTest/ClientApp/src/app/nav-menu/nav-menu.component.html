@@ -1,0 +1,43 @@
+<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' [routerLink]='["/"]'>Linnworks Test</a>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
+            <ul class='nav navbar-nav'>
+                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+                    <a [routerLink]='["/"]' (click)='collapse()'>
+                        <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' [hidden]='loggedIn()'>
+                    <a [routerLink]='["/login"]' (click)='collapse()'>
+                        <span class='glyphicon glyphicon-user'></span> Login
+                    </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }' [hidden]='!loggedIn()'>
+                    <a [routerLink]='["/logout"]' (click)='logout()'>
+                        <span class='glyphicon glyphicon-eject'></span> Logout
+                    </a>
+                </li>
+                <li [routerLinkActive]='["link-active"]' [hidden]='!loggedIn()'>
+                    <a [routerLink]='["/fetch-category"]' (click)='collapse()'>
+                        <span class='glyphicon glyphicon-th-list'></span> Categories
+                    </a>
+                </li>
+              <li [routerLinkActive]='["link-active"]'>
+                <a [routerLink]='["/api"]' (click)='collapse()'>
+                  <span class='glyphicon glyphicon-eye-open'></span> API
+                </a>
+              </li>
+            </ul>
+        </div>
+    </div>
+</div>

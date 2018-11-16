@@ -1,0 +1,14 @@
+iframe {
+  border: none;
+  height: 3000px;
+  overflow: hidden;
+  margin-left: -15px;
+  width: calc(100% + 30px);
+}
+
+@media (min-width: 768px) {
+  iframe {
+    margin-left: -35px;
+    width: calc(100% + 50px);
+  }
+}
